@@ -1,0 +1,17 @@
+{
+  "name": "wwc",
+  "version": "1.0.0",
+  "description": "world wide chat",
+  "main": "index.js",
+  "scripts": {
+    "devStart":"nodemon server.js"
+  },
+  "author": "laurentin",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
