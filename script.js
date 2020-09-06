@@ -1,4 +1,4 @@
-const socket = io('https://worldwidechat.github.io/server.js');
+const socket = io('https://worldwidechat.github.io:3000');
 const salon = document.getElementById('message-container');
 const machine = document.getElementById('send-container');
 const messageinpute = document.getElementById('message-input');
