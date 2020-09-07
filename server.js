@@ -1,8 +1,19 @@
-const io = require('socket.io')(3000)
+const path = require('path');
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io')
+const app = express();
+
+const server = http.createServer(app);
+
+const io = socketio(server);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 
 const users = {};
-
 let message_history=[];
+
 io.on('connection', socket =>{
 
     let usercount = io.engine.clientsCount;
@@ -25,5 +36,7 @@ io.on('connection', socket =>{
     })
 
 })
-
-
+const PORT = 3000 || process.env.PORT;
+server.listen(PORT, () => {
+    console.log('listening on *:'+ PORT);
+  });
