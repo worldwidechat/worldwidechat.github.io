@@ -1,6 +1,6 @@
 
 
-const socket = io('http://localhost:8080');
+const socket = io('http://worldwidechat.azurewebsites.net:8080');
 
 const salon = document.getElementById('message-container');
 const machine = document.getElementById('send-container');
