@@ -8,8 +8,8 @@ const server = http.createServer(app);
 
 const io = socketio(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.static(path.join(__dirname, 'public')));
 
 const users = {};
 let message_history=[];
@@ -36,7 +36,7 @@ io.on('connection', socket =>{
     })
 
 })
-const PORT = 3000 || process.env.PORT;
+const PORT = 8080 || process.env.PORT;
 server.listen(PORT, () => {
     console.log('listening on *:'+ PORT);
   });
