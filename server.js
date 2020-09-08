@@ -3,11 +3,11 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io')
 const app = express();
-
+const INDEX = '/index.html';
 const server = http.createServer(app);
 
 const io = socketio(server);
-
+app.use((req, res) => res.sendFile(INDEX, { root: __dirname }))
 
 
 

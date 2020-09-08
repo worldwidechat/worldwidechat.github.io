@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Chat App</title>
+  
+  
+  
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      background-color: rgb(226, 226, 226);
+      color:rgb(0, 0, 0);
+
+    }
+
+    #message-container {
+      width: 80%;
+      max-width: 1200px;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: x-large;
+      margin-bottom: 5%;
+      
+      line-height: 125%;
+    }
+
+    #message-container div {
+      margin-top: 15px;
+      padding: 5px;
+      color:rgb(0, 0, 0);
+    }
+
+    #message-container div:nth-child(2n) {
+      margin-top: 15px;
+      color:rgb(0, 0, 0);
+    }
+
+    #send-container {
+      position: fixed;
+      padding-bottom: 30px;
+      bottom: 0;
+      background-color: transparent;
+      max-width: 1200px;
+      width: 80%;
+      height:5% ;
+      display: flex;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size:large;
+    }
+
+    #message-input {
+      background-color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size:large;
+      border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid #000000 3px;
+      flex-grow: 1;
+      margin-right: 3%;
+    }
+    #chara{
+      font-size: xx-large;
+      margin-left: 3%;
+      padding: 5px;
+
+      }
+  </style>
+</head>
+<body>
+  
+
+  <div id="message-container"></div>
+  <form id="send-container">
+    <input type="text" onkeydown="updatecount()" onkeyup="updatecount()" id="message-input"placeholder="message (0.01$ per character)">
+    <div id="paypal-button"></div>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <p id='chara'></p>
+    
+  </form>
+  <script  src="/socket.io/socket.io.js"></script>
+    <script>
+    const socket = io('http://localhost:3000');
+    const name = prompt('name: ')
+    const salon = document.getElementById('message-container');
+    const machine = document.getElementById('send-container');
+    const messageinpute = document.getElementById('message-input');
+     
+    var cs = messageinpute.value.length;
+    document.getElementById('chara').innerHTML = cs;
+    
+    
+    
+    
+    
+    socket.emit('user',name)
+    
+    socket.on('chat-message',data=>{
+        appendMessage(`${data.id}: ${data.message}`)
+        console.log(`${data.id}: ${data.message}`);
+    })
+    
+    socket.on('usercount', yo =>{
+        
+        console.log(yo);
+    })
+    
+    function sendmessage(){
+    
+    const message = messageinpute.value;
+    if(message){
+    socket.emit('send',message)
+    messageinpute.value = '';
+    updatecount()
+    }}
+    
+    
+    function appendMessage(message){
+        const messageElement = document.createElement('div');
+        messageElement.innerText = message;
+        salon.append(messageElement);
+    }
+    
+    
+    
+    function updatecount(){
+        cs = messageinpute.value.length;
+        
+         document.getElementById('chara').innerHTML = cs;
+           
+        
+    }
+    
+    
+      paypal.Button.render({
+        // Configure environment
+        env: 'production',
+        client: {
+          sandbox: 'ASlbPltk-hBfirs3oo36tas6Pv1XnZsLVKq6MauXrw63B5d4rXLEcQf48m3o9CXUAhul1wNaC4sHOt6X',
+          production: 'Ac6LFeXptwsP-ZrxEaSwIWiO3ebu2ZEgOxEOsJwmgHpuWgeLyFNcwDlqOAay6ohL3A_ht9s5DqJ9qgcE'
+        },
+        // Customize button (optional)
+        locale: 'en_US',
+        style: {
+        
+          height:50,
+          
+          color: 'black',
+          shape: 'rect',
+          label:'paypal',
+          tagline:'false',
+        },
+    
+        // Enable Pay Now checkout flow (optional)
+        commit: true,
+    
+        // Set up a payment
+        payment: function(data, actions) {
+          return actions.payment.create({
+            transactions: [{
+              amount: {
+                total: cs*0.01,
+                currency: 'USD'
+              }
+            }]
+          });
+        },
+        // Execute the payment
+        onAuthorize: function(data, actions) {
+          return actions.payment.execute().then(function() {
+            // Show a confirmation message to the buyer
+            
+            sendmessage();
+          });
+        }
+      }, '#paypal-button');</script>
+</body>
+</html>

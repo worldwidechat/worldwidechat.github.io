@@ -1,6 +1,6 @@
 
 
-const socket = io('https://worldwidechat.herokuapp.com:3000');
+const socket = io('http://localhost:3000');
 
 const salon = document.getElementById('message-container');
 const machine = document.getElementById('send-container');
