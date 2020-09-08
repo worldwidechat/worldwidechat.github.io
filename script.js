@@ -1,6 +1,6 @@
 
 
-const socket = io('http://localhost:3000');
+const socket = io('https://worldwidechatserver.azurewebsites.net');
 
 const salon = document.getElementById('message-container');
 const machine = document.getElementById('send-container');
